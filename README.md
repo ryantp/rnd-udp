@@ -11,8 +11,8 @@ a computer and use (most) all the tools to do
 said process.
 
 Since I moonlight as a programmer, I tend to
-take some inspiration from those tools (incl-
-uding all their faults (good stuff to learn
+take some inspiration from those tools (
+including all their faults (good stuff to learn
 from :P)), and implement my own (although
 _my_ scripts are more along the lines of sys-
 administation).
