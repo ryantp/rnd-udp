@@ -1,3 +1,6 @@
+# directories
 ./other/
-./test.py
-./pydoc.py
+./__pycache__/
+
+# files
+# ./pydoc.py moved to ./other/
