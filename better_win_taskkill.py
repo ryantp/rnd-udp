@@ -1,7 +1,18 @@
 #python3.5
 
-'''a better implementation of taskkill'''
+'''a better implementation of taskkill on Windows
 
+-- TO-BE-ADDED --
+CPU Usage tasklist'''
+
+__version__ = '1.0.1.2'
+__license__ = "GNU GPL"
+__author__ = 'ryantp'
+__email__ = 'ryantp92@gmail.com'
+__maintainer__ = "NOT_ACTIVELY_MAINTAINED"
+__status__ = "Development"
+
+import argparse
 from os import popen
 import sys
 
@@ -11,6 +22,7 @@ else:
     print("This is a Windows function")
     sys.exit(1)
 
+# help information for interactive tool
 hbanner = '''\
 tkill -- Win32 tasklist + taskkill tool, implemented with python
 usage: tkill [OPTIONS] <process_name>/<process_id>
@@ -29,14 +41,18 @@ INFO:
         PARTIAL PROCESS NAME (ie. 'notepad')
 '''
 
+# options banner; appears when tool launches -- will not be reprinted if screen is cleared
 mbanner = '''\
-%(usr)s -- tkill
+tkill -- interactive
 
     [L]ist Processes
     [P]rocess ID
     [K]ill
     [A]ll, kill
     [Q]uit
+
+    [H]elp
+    [C]lear screen
 
 '''
 
@@ -50,26 +66,70 @@ CMD = {
 }
 
 
-def h():
+def help():
     global hbanner
     print(hbanner)
 
 
-def l():
+def check_pname(pname = ''):
+    if pname.endswith('.exe'):
+        return pname
+    elif '.' in pname:
+        return pname
+    else:
+        if(pname):
+            return pname + '.exe'
+        else:
+            sys.exit(3)
+
+
+def tlist(v = 0):
     # tasklist
+    '''VERBOSENESS:
+    0 = standard tasklistk output; no -v OR -q
+    1 = verbose [-v]; tasklist /v
+    -1 = quiet [-q]; only name and pid
+    ###
+    defaults to 0 / standard output'''
     global CMD
-    with popen(CMD['TL'], 'r') as f:
-        for line in f.read().split('\n'):
-            print(line)
+    if(v == 0):
+        with popen(CMD['TL'], 'r') as f:
+            for line in f.read().split('\n'):
+               print(line)
+    elif(v == 1):
+        with popen(CMD['TLV'], 'r') as f:
+           for line in f.read().split('\n'):
+               print(line)
+    elif(v == -1):
+        # run tasklist; return all lines running <name> process
+        tmp_values = []
+        datalist = []
+        items = []
+        with popen(CMD['TL'], 'r') as f:
+            for line in f.read().split('\n'):
+                tmp_values.append(line)
+            f.close()
+        del f
+        for tmp in tmp_values[5:-1]:
+            datalist.append([ t for t in tmp.split(' ') if t])
+        del tmp_values
+        for sublist in datalist:
+            name = []
+            pid = 0
+            for value in sublist:
+                try:
+                    pid = int(value)
+                    break
+                except ValueError:
+                    name.append(value)
+            print("%s\t--\t%d" % (" ".join(name), pid))
+    else:
+        pass
 
 
-def p(name = ''):
+def pid(pname = ''):
     # get pid of named process
     global CMD
-    if name.endswith('.exe'):
-        pass
-    else:
-        name += '.exe'
     l = []
     tmp = []
     with popen(CMD['TLV'], 'r') as f:
@@ -78,36 +138,38 @@ def p(name = ''):
         f.close()
     del f
     for t in tmp:
-        if name in t:
+        if pname in t:
             l.append([x for x in t if x])
 
     for i, _ in enumerate(l):
         print("%(n)s - %(d)d - %(t)s" % {'n': l[i][0], 'd': int(l[i][1]), 't': l[i][-1]})
 
 
-def k(im = '', pid = 0):
+def kill(pid = 0):
+    # taskkill /pid <pid> # only called through query
     global CMD
     if(pid):
         with popen(CMD['TK'] % {'pid': pid}, 'r') as f:
             print(f.read())
             f.close()
         del f
-    else:
+
+
+def killall(im = ''):
+    # taskkill /im <name> # requires exact for <name>
+    global CMD
+    if(im):
         with popen(CMD['TKIM'] % {'exe': im}, 'r') as f:
             print(f.read())
             f.close()
         del f
 
 
-def q(name = ''):
+def query(pname = ''):
     # run tasklist; return all lines running <name> process
     global CMD
     Q = []
     c = -1 # init c; if invalid option is given, will return to main, instead of crashing
-    if name.endswith('.exe'):
-        pass
-    else:
-        name += '.exe'
     l = []
     tmp = []
     with popen(CMD['TLV'], 'r') as f:
@@ -116,7 +178,7 @@ def q(name = ''):
         f.close()
     del f
     for t in tmp:
-        if name in t:
+        if pname in t:
             l.append([x for x in t if x])
 
     for i, _ in enumerate(l):
@@ -132,7 +194,7 @@ def q(name = ''):
     if(c > len(Q) - 1 or c < 0):
         print("Invalid choice.")
     else:
-       k(pid = int(Q[c][1]))
+       kill(pid = int(Q[c][1]))
 
 
 def clear():
@@ -140,48 +202,81 @@ def clear():
     system("cls")
     del system
 
-
 def main():
     # interactive taskkill list
     global mbanner
-    from getpass import getuser as _usr
     m2 = 'action (l, p, k, a, q): '
-    loccmd = ['l', 'p', 'k', 'a', 'c']
+    lcmd = ['l', 'p', 'k', 'a', 'c']
 
-    clear()
-    print(mbanner % {'usr': _usr()})
+    #clear()
+    print(mbanner)
     while(1):
         print(m2, end = "")
         a = input()
-        if a in loccmd:
+        if a in lcmd:
             if a.lower() == 'k':
                 c = input("Process name [kill]: ")
-                q(name = c)
+                query(pname = c)
             elif a.lower() == 'a':
                 c = input("Process name [killall]: ")
-                k(im = c)
+                killall(im = c)
             elif a.lower() == 'p':
                 c = input("Process name: ")
-                p(name = c)
+                pid(pname = c)
             elif a.lower() == 'l':
-                l()
+                tlist()
             elif a.lower() == 'c':
                 clear()
         elif(a.lower() == 'h'):
-            h()
+            help()
         elif(a.lower() == 'q'):
             sys.exit(0)
         else:
             print("UNK CMD -- %(c)s" % {'c': a})
     
 
-def parse(args = []):
-    # takes sys.argv[1:] (everything besides the program name) and executes an appropriate action
-    pass
+parser = argparse.ArgumentParser(prog = "tkill [better_win_taskkill]",
+    description = "a python wrapper for Windows tasklist & taskkill",
+    epilog = "running tkill without optional args will run the standard kill <pname>")
 
+lOut = parser.add_mutually_exclusive_group()
+lOut.add_argument('-v', '--verbose', action = 'store_true', help = 'tasklisk verbose results')
+lOut.add_argument('-q', '--quiet', action = 'store_true', help = 'minimal tasklist output')
 
-if(len(sys.argv) > 1):
-    parse(sys.argv[1:])
+parser.add_argument('pname', nargs = "?", action = 'store', help = "process to spotlight")
+parser.add_argument('-c', '--cpu', action = 'store_true', help = "list processes by their cpu usage, highest-lowest")
+parser.add_argument('-l', '--list', action = 'store_true', help = "list all running functions")
+parser.add_argument('-p', '--pid', action = 'store_true', help = "list the process ID for all instancs of a given function name")
+parser.add_argument('-u', '--uselstr', action = 'store_true', help = "use literal string passed by the user, without altering it")
+
+args = parser.parse_args()
+
+if(args.pname):
+    # handle events which revolve around pname
+    if(args.uselstr):
+        if(args.pid):
+            pid(pname = args.pname)
+        else:
+            query(pname = args.pname)
+    else:
+        name = check_pname(args.pname)
+        if(args.pid):
+            pid(pname = name)
+        else:
+            query(pname = name)
+elif(args.list):
+    # list running processes
+    v = 0 # code-int for verboseness
+    if(args.quiet):
+        v = -1
+    elif(args.verbose):
+        v = 1
+    else:
+        pass
+    tlist(v = v)
+elif(args.cpu):
+    # list processes by cpu usage -- to-be-added
+    print("ATTN: this function is not yet active!")
 else:
     main()
 
