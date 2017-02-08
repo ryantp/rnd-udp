@@ -19,8 +19,3 @@ if __name__ == "__main__":
         print("fibn usage: fibn [number]")
         sys.exit(2)
     print(fibn(n))
-<<<<<<< HEAD
-    
-=======
-    
->>>>>>> a344f8c6af38ca67ceab1ffcbd3aea4f7a67a99e

@@ -24,7 +24,7 @@ else:
 
 # help information for interactive tool
 hbanner = '''\
-tkill -- Win32 tasklist + taskkill tool, implemented with python
+tkill v%(v)s -- Win32 tasklist + taskkill tool, implemented with python
 usage: tkill [OPTIONS] <process_name>/<process_id>
 
 adv flags: [-h; -c; -p; -l; -a]
@@ -39,7 +39,7 @@ INFO:
     <process_name>: name of running process; input either FULL
         PROCESS NAME (with `.exe` at the end, ie. 'notepad.exe') or
         PARTIAL PROCESS NAME (ie. 'notepad')
-'''
+''' % {'v': __version__}
 
 # options banner; appears when tool launches -- will not be reprinted if screen is cleared
 mbanner = '''\
@@ -235,8 +235,8 @@ def main():
             print("UNK CMD -- %(c)s" % {'c': a})
     
 
-parser = argparse.ArgumentParser(prog = "tkill [better_win_taskkill]",
-    description = "a python wrapper for Windows tasklist & taskkill",
+parser = argparse.ArgumentParser(prog = "tkill v%(v)s [better_win_taskkill]" % {'v': __version__},
+    description = "%(prog)s -- a python wrapper for Windows tasklist & taskkill",
     epilog = "running tkill without optional args will run the standard kill <pname>")
 
 lOut = parser.add_mutually_exclusive_group()
