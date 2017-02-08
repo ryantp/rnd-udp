@@ -3,7 +3,11 @@
 '''a simple wrapper tool for creating new files of any type.
 
 Note:
-	uses `mkf.bat` file to get the arguments for dir and filename'''
+	uses `mkf.bat` file to get the arguments for dir and filename
+
+Limitations:
+	for use in current working directory only;
+	if a full path in a different location is input, a runtime error will probably occur'''
 
 __version__ = "1.0.0.1"
 __author__ = "Ryan Pelton"
@@ -13,7 +17,6 @@ __license__ = "GNU GPL"
 __status__ = "Production"
 
 import os, sys
-
 
 usage = '''\
 mkf -> make file
@@ -32,19 +35,22 @@ def file_exists_querey(fn = ''):
 		o = input("Overwrite? [y]: ")
 		if not o or o.lower().startswith('y'):
 			ovw(fn)
-		elif o == '/' or o.lower().startswith('n'):
+		elif o == '/':
 			print("mkf aborting!")
 			sys.exit(0)
-		else:
+		elif o.lower().startswith('n'):
 			appn(fn)
+		else:
+			print("Unrecognized option, exitting.")
+			sys.exit(1)
 	else:
 		ovw(fn)
 
 
 def ovw(fn):
+	# overwrite / create
 	with os.popen("echo //text here>> %s" % fn) as f:
-		print("File %s created!" % fn)
-		f.close()
+		pass
 	del f
 
 
@@ -52,18 +58,17 @@ def appn(fn):
 	n = "(%d)"
 	name = fn.split("/")[-1]
 	l = name.split(".")
-	for i in range(1, 21):
-		# 20 possibilities
-		tmpl = l[0] + n % i
-		tmpl += '.' + l[1]
-		tmpname = name[0:-1]
-		tmpname.append(tmpl)
-		if not os.path.exists(tmpname):
+	for i in range(1, 1001):
+		# 1000 possibilities... just cuz :P
+		tmpn = l[0] + n % i
+		tmpn += '.' + l[1]
+		tmpl = fn.split("/")[0:-1]
+		tmpl.append(tmpn)
+		if not os.path.exists("/".join(tmpl)):
 			break
 
-	with os.popen("echo //text here>> %s" % "/".join(tmpname)) as f:
-		print("File %s created!" % "/".join(tmpname))
-		f.close()
+	with os.popen("echo //text here>> %s" % "/".join(tmpl)) as f:
+		pass
 	del f
 
 
