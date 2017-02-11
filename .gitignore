@@ -1,7 +1,11 @@
 # directories
-./other/
 ./__pycache__/
+./other/
+./skoold/
+./uhelp/
 
 # files
 # ./pydoc.py moved to ./other/
+./skool.py
 ./test.py
+./udp_help_script.py
