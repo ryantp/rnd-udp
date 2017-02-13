@@ -1,0 +1,5 @@
+## COMMENTS start with double hash's
+## delimiter = ::
+## symbol | will convert to \n in pmac.py
+##
+m-1-svrzro::Micro Server;|Codename = Server0;|MACINF ('Win32', 'Windows 7 Home', '64-bit');|MACCT ('djangoserver', ADMIN = False);|USER_NOTES: An old(er) model laptop, perfect for use in testing. This machine is slow to boot (and rife with pop-ups for bloatware), but once up and running is pretty reliable; the only real issue is that it heats up too fast, even doing non-intensive tasks (the physical machine probably needs to be cleaned out).
