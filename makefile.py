@@ -1,6 +1,6 @@
 #python3.5
 
-'''a simple wrapper tool for creating new files of any type.
+'''a simple wrapper tool for creating new files of any type. a Win32 version of unix's `touch` function
 
 Note:
 	uses `mkf.bat` file to get the arguments for dir and filename
@@ -60,8 +60,7 @@ def appn(fn):
 	l = name.split(".")
 	for i in range(1, 1001):
 		# 1000 possibilities... just cuz :P
-		tmpn = l[0] + n % i
-		tmpn += '.' + l[1]
+		tmpn = l[0] + n % i + '.' + l[1]
 		tmpl = fn.split("/")[0:-1]
 		tmpl.append(tmpn)
 		if not os.path.exists("/".join(tmpl)):

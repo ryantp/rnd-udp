@@ -1,13 +1,13 @@
 # directories
 /__pycache__/
-/other/
-/skoold/
-/udc/
-/uhelp/
+./other/
+./skoold/
+./udc/
+./uhelp/
 
 # files
 # ./pydoc.py moved to ./other/
-/pmac.py
-/skool.py
-/test.py
-/udp_help_script.py
+./pmac.py
+./skool.py
+./test.py
+./udp_help_script.py
