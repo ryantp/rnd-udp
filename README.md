@@ -20,7 +20,7 @@ administation).
 ================================================
 
 LIST:
-- bcx.py -- inspired to write this because of my day job o.o; creates .PNG barcode images of given values [max_len=15] (requires `pybarcode`)
+- bcx.py -- inspired to write this because of my day job o.o; creates .PNG barcode images of given values [max_len=15]; NOTE: requires `pybarcode`
 - better_win_taskkill.py -- interactive taskkill program (still being polished); call without params for interactive session, with params for single-call cli use
                               (NOTE: gets called from batch file called `tkill.bat` (on local machine).)
 - checksum.py -- performs a rudamentary sha calculation of a file's contents
