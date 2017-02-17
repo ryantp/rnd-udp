@@ -6,7 +6,7 @@ import random
 import string
 import time
 
-posChars = string.ascii_lowercase + string.digits + string.ascii_uppercase + " .,!?;:@#$%^&*()-_=+\\|]}[{'\"/`~"
+posChars = string.ascii_lowercase + string.digits + string.ascii_uppercase + " .,!?;:@#$%^&*()-_=+\\|]}[{'\"/`~<>"
 tar = input("Enter your target text: ")
 
 attempt = "".join(random.choice(posChars) for i in range(len(tar)))
