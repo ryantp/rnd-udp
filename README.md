@@ -26,4 +26,5 @@ LIST:
 - checksum.py -- performs a rudamentary sha calculation of a file's contents
 - fibn.py -- simple fibonocci program, because why not?
 - makefile.py -- makes a file of .* type in the cwd; a Win32 version of unix's `touch` function
+- open_file.py -- because I am tired of having to type in `notepad <filename>` all the time to add quick edits to files :/
 - textev.py -- from `http://usingpython.com/dl/evolutionText.py`; it's a cute little program, so why not?
