@@ -1,6 +1,5 @@
 import getpass
 import sys
-import webbrowser
 
 import barcode
 from barcode.writer import ImageWriter
@@ -14,7 +13,7 @@ def make(d):
 
 try:
 	if sys.argv[1]:
-		print("NOTE: barcode.codex: code39(..., add_checksum = False) -- USER-ADDITION")
+		print("NOTE: barcode.codex: code39(..., add_checksum = False) -- USER-ADDITION") # the source code to pybarcode (barcode) was edited (by me), to not include the checksum
 		print("Printing %d/%d" % (len(sys.argv[1]), MAX_LEN))
 		if len(sys.argv[1]) <= MAX_LEN:
 			try:
