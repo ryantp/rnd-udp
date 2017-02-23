@@ -18,6 +18,11 @@ __status__ = "Production"
 
 import os, sys
 
+if sys.argv[1].replace("\\", "/").endswith("/"):
+	batdir = sys.argv[1].replace("\\", "/")
+else:
+	batdir = sys.argv[1].replace("\\", "/") + "/"
+
 usage = '''\
 mkf -> make file
 ======================
@@ -27,6 +32,34 @@ REQUIRES:
 EXAMPLE:
 > mkf example.txt
 '''
+
+def pph(fn = ''):
+	''' personal place holder; will split fn at the . and return a custom placeholder text '''
+	global batdir
+	pphdir = "%ssrc/tpl/mkftpl/" % batdir
+	ph = {
+		'py': pphdir + 'py', # simple hello world for python
+		'c': pphdir + 'c', # hello world for c
+		'cpp': pphdir + 'cpp', # hello world for cpp
+		'html': pphdir + 'html', # html hello world
+		'txt': pphdir + 'txt', # text...
+	}
+	try:
+		return ph[fn.split('.')[-1]]
+	except KeyError:
+		return 0
+
+def wct(fn = ''):
+	# write custom text
+	fp = pph(fn)
+	if fp:
+		with open(fp, 'r') as f:
+			txt = f.read()
+	else:
+		print("err-no 2: missing template")
+		txt = "text..."
+	with open(fn, 'w') as f:
+			f.write(txt)
 
 
 def file_exists_querey(fn = ''):
@@ -52,6 +85,7 @@ def ovw(fn):
 	with os.popen("echo //text here>> %s" % fn) as f:
 		pass
 	del f
+	wct(fn)
 
 
 def appn(fn):
@@ -72,18 +106,18 @@ def appn(fn):
 
 
 def main():
-	raw_path = sys.argv[1].replace("\\", "/")
+	raw_path = sys.argv[2].replace("\\", "/")
 	if raw_path.endswith("/"):
 		path = raw_path
 	else:
 		path = raw_path + "/"
 
-	path += sys.argv[2]
+	path += sys.argv[3]
 	file_exists_querey(path)
 
 
 if __name__ == "__main__":
-	if(len(sys.argv) == 3):
+	if(len(sys.argv) == 4):
 		main()
 	else:
 		print(usage)

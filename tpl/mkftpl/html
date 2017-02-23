@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<!-- html.ftpl -->
+<html lang="en">
+	<head>
+		<title>Placeholder</title>
+		<style type="text/css">
+			p.et{
+				font-size: 200%;
+			}
+		</style>
+	</head>
+	<body>
+		<p class="et">Hello world!</p>
+	</body>
+</html>

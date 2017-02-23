@@ -66,6 +66,11 @@ CMD = {
 }
 
 
+def chtitle():
+    with popen("title tkill") as f:
+        pass
+
+
 def help():
     global hbanner
     print(hbanner)
@@ -209,6 +214,7 @@ def main():
     lcmd = ['l', 'p', 'k', 'a', 'c']
 
     #clear()
+    chtitle()
     print(mbanner)
     while(1):
         print(m2, end = "")
