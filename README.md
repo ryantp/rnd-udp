@@ -25,6 +25,8 @@ LIST:
                               (NOTE: gets called from batch file called `tkill.bat` (on local machine).)
 - checksum.py -- performs a rudamentary sha calculation of a file's contents
 - fibn.py -- simple fibonocci program, because why not?
+- grep.py -- a python implementation of grep
 - makefile.py -- makes a file of .* type in the cwd; a Win32 version of unix's `touch` function
 - open_file.py -- because I am tired of having to type in `notepad <filename>` all the time to add quick edits to files :/
+- rpw.py -- prints string of random character of N length (if I'm not feeling too creative when it comes time to come up with a new password :P)
 - textev.py -- from `http://usingpython.com/dl/evolutionText.py`; it's a cute little program, so why not?
