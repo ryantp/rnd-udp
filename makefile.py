@@ -38,6 +38,7 @@ def pph(fn = ''):
 	global batdir
 	pphdir = "%ssrc/tpl/mkftpl/" % batdir
 	ph = {
+		'bat': pphdir + 'bat',
 		'py': pphdir + 'py', # simple hello world for python
 		'c': pphdir + 'c', # hello world for c
 		'cpp': pphdir + 'cpp', # hello world for cpp

@@ -80,14 +80,27 @@ par.add_argument('-v', '--version', action = 'version', version = '%(prog)s {}'.
 	help = 'displays tool version')
 par.add_argument('-r', '--retast', action = 'store', help = 'Replace Target String')
 par.add_argument('-c', '--compare', action = 'store', help = 'display differences between two files')
-par.add_argument('-a', '--author', action = 'store_true', help = 'display program author') 
+par.add_argument('-a', '--author', action = 'store_true', help = 'display program author')
+par.add_argument('-V', '--Verbose', action = 'store_true', help = 'verbose output')
 
 
-
+def grep_fileV(search_string):
+	i = 0
+	print('\n********************\n')
+	for line in args.file:
+		i += 1
+		if re.search(search_string, line):
+			try:
+				print("%d >>> %s" % (i, line))
+			except UnicodeEncodeError:
+				print(line.encode("utf-8"))
+		else:
+			pass 
+	print('\n********************\n')
 
 
 def grep_file(search_string):
-	print('\n/**\n')
+	print('\n********************\n')
 	for line in args.file:
 		if re.search(search_string, line):
 			try:
@@ -96,7 +109,7 @@ def grep_file(search_string):
 				print(line.encode("utf-8"))
 		else:
 			pass 
-	print('\n**/\n')
+	print('\n********************\n')
 
 def grep_output_to_file(search_string):
 	output_file_name = args.fout 
@@ -127,7 +140,7 @@ def retast(target_string, file_name, replacement_string):
 	with open(tmp_file, 'w') as _:
 		pass
 
-	print('\n/**\n')
+	print('\n********************\n')
 	with open(file_name, 'r') as f:
 		for line in f:
 			if re.search(target_string, line):
@@ -139,7 +152,7 @@ def retast(target_string, file_name, replacement_string):
 			else:
 				with open(tmp_file, 'a') as _:
 					_.write(line)
-	print('\n**/\n')
+	print('\n********************\n')
 	os.system('del %(fn)s' % {'fn': file_name})
 	os.system('ren %(tmp)s %(org)s' % {'tmp': tmp_file, 'org': file_name})
 
@@ -203,7 +216,10 @@ else:
 		if not args.string:
 			print("No search string was provided")
 		else:
-			grep_file(args.string) 
+			if args.Verbose:
+				grep_fileV(args.string)
+			else:
+				grep_file(args.string) 
 	elif (args.author):
 		print('pygrep -- arkat-one <arcius0@gmail.com>') 
 	elif (args.info):
