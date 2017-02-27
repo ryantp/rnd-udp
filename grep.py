@@ -1,10 +1,17 @@
 #!C:\Anaconda3
 
+__version__ = "1.0.4.1"
+__author__ = "Ryan Pelton"
+__email__ = "ryantp@gmail.com"
+__maintainer__ = "NOT_ACTIVELY_MAINTAINED"
+__license__ = "GNU GPL"
+__status__ = "Production"
+
 import argparse, os, re, sys
 
 # python version of grep -- for use outside of Linux / OSX 
 
-# how to == py pygrep.py <file> <string to grep>
+# how to == py grep.py <file> <string to grep>
 
 
 """
@@ -15,12 +22,9 @@ A Python grep tool for use in Windows env (since win doesn't support grep (! not
 Currently this script will print whole lines (in-context) of the search string.
 """
 
+VERSION_NOTES = r'''06.10.2016@1956:
 
-VER_NO = "v1.3" 
-
-VERSION_NOTES = r'''JUNE 10 @1956:
-
-+to v1.3:
++to v1.0.4:
 	-	added compare_file() to program
 '''
 
@@ -35,16 +39,16 @@ e_snip = \
 r'''
 ## basic grep:
 
->>>		pygrep.py <file_name.file_ext> <string_to_search_for>
+>>>		grep <file_name.file_ext> <string_to_search_for>
 
-e.g.	pygrep.py example.txt "hello"
+e.g.	grep example.txt "hello"
 
 ## output to file:
 
->>>		pygrep.py <file> <string> -f <output_file_path>
+>>>		grep.py <file> <string> -f <output_file_path>
 
 		
-e.g.	pygrep.py example.txt "hello" -f "example_res.txt"
+e.g.	grep.py example.txt "hello" -f "example_res.txt"
 
 
 ** other notes
@@ -67,7 +71,7 @@ e.g.	pygrep.py example.txt "hello" -f "example_res.txt"
 
 
 # CLI PARSER -- set-up 
-par = argparse.ArgumentParser(prog = 'pygrep', prefix_chars = '-',
+par = argparse.ArgumentParser(prog = 'grep', prefix_chars = '-',
 	description = 'ASCII grep tool (CLI) only -- type [-h/--help] for assistance.') 
 par.add_argument('file', nargs = '?', type = argparse.FileType('r'),
 	default = None, help = 'file to grep') 
@@ -75,8 +79,8 @@ par.add_argument('string', nargs = '?', action = 'store',
 	help = 'string to search for within file') 
 par.add_argument('-f', '--fout', action = 'store', help = 'output info to file FOUT') 
 par.add_argument('-i', '--info', action = 'store_true', help = 'other help information') 
-par.add_argument('-e', '--example', action = 'store_true', help = 'display example(s) for using pygrep') 
-par.add_argument('-v', '--version', action = 'version', version = '%(prog)s {}'.format(VER_NO),
+par.add_argument('-e', '--example', action = 'store_true', help = 'display example(s) for using grep') 
+par.add_argument('-v', '--version', action = 'version', version = '%(prog)s {}'.format(__version__),
 	help = 'displays tool version')
 par.add_argument('-r', '--retast', action = 'store', help = 'Replace Target String')
 par.add_argument('-c', '--compare', action = 'store', help = 'display differences between two files')
@@ -221,7 +225,7 @@ else:
 			else:
 				grep_file(args.string) 
 	elif (args.author):
-		print('pygrep -- arkat-one <arcius0@gmail.com>') 
+		print('grep -- arkat-one <arcius0@gmail.com>') 
 	elif (args.info):
 		print(h_info) 
 	elif (args.example):
@@ -229,4 +233,4 @@ else:
 	elif (args.compare):
 		compare_files(args.compare)
 	else:
-		print('No options or file path were provied  type `pygrep.py -h` for help')
+		print('No options or file path were provied  type `grep -h` for help')
