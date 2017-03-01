@@ -17,9 +17,13 @@ try:
 except IndexError:
 	print("err-no 1: rpw requires a length integer")
 	sys.exit(1)
-except TypeError:
-	print("err-no 1: rpw requires a length integer")
-	sys.exit(1)
+except ValueError:
+	if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+		print("Usage: rpw [STRING_LENGTH]")
+		sys.exit(0)
+	else:
+		print("err-no 1: rpw requires a length integer")
+		sys.exit(1)
 
 for i in range(rng):
 	rstr.append(random.choice(uc))

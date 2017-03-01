@@ -51,32 +51,36 @@ def main(fn = '', sv = 1):
 
 if __name__ == '__main__':
 	#print(len(sys.argv))
-	if(len(sys.argv) > 1 and len(sys.argv) < 5):
-		if(sys.argv[2] == '-h'):
-			print(usage)
-			sys.exit(0)
+	try:
+		if(len(sys.argv) > 1 and len(sys.argv) < 5):
+			if(sys.argv[2] == '-h'):
+				print(usage)
+				sys.exit(0)
 
-		raw_path = sys.argv[1].replace("\\", "/")
-		if raw_path.endswith("/"):
-			path = raw_path
-		else:
-			path = raw_path + "/"
+			raw_path = sys.argv[1].replace("\\", "/")
+			if raw_path.endswith("/"):
+				path = raw_path
+			else:
+				path = raw_path + "/"
 
-		try:
-			path += sys.argv[2]
-		except IndexError:
-			print("No filename supplied")
-			sys.exit(1)
+			try:
+				path += sys.argv[2]
+			except IndexError:
+				print("No filename supplied")
+				sys.exit(1)
 
-		try:
-			sv = int(sys.argv[3])
-		except ValueError:
-			print("Invalid SHA_VAL: %s" % str(sys.argv[3]))
-			sys.exit(2)
-		except IndexError:
-			sv = 1
+			try:
+				sv = int(sys.argv[3])
+			except ValueError:
+				print("Invalid SHA_VAL: %s" % str(sys.argv[3]))
+				sys.exit(2)
+			except IndexError:
+				sv = 1
 
-		main(fn = path, sv = sv)
+			main(fn = path, sv = sv)
+	except IndexError:
+		print(usage)
+		sys.exit(1)
 	else:
 		print(usage)
 		sys.exit(1)

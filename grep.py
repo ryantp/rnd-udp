@@ -92,27 +92,33 @@ def grep_fileV(search_string):
 	i = 0
 	print('\n********************\n')
 	for line in args.file:
-		i += 1
-		if re.search(search_string, line):
-			try:
-				print("%d >>> %s" % (i, line))
-			except UnicodeEncodeError:
-				print(line.encode("utf-8"))
-		else:
-			pass 
+		try:
+			i += 1
+			if re.search(search_string, line):
+				try:
+					print("%d >>> %s" % (i, line))
+				except UnicodeEncodeError:
+					print(line.encode("utf-8"))
+			else:
+				pass
+		except KeyboardInterrupt:
+			sys.exit(3)
 	print('\n********************\n')
 
 
 def grep_file(search_string):
 	print('\n********************\n')
 	for line in args.file:
-		if re.search(search_string, line):
-			try:
-				print(line)
-			except UnicodeEncodeError:
-				print(line.encode("utf-8"))
-		else:
-			pass 
+		try:
+			if re.search(search_string, line):
+				try:
+					print(line)
+				except UnicodeEncodeError:
+					print(line.encode("utf-8"))
+			else:
+				pass
+		except KeyboardInterrupt:
+			sys.exit(3)
 	print('\n********************\n')
 
 def grep_output_to_file(search_string):
