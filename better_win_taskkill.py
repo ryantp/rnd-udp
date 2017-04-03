@@ -171,7 +171,7 @@ def killall(im = ''):
 
 
 def query(pname = ''):
-    # run tasklist; return all lines running <name> process
+    # print list of of running files with <pname>
     global CMD
     Q = []
     c = -1 # init c; if invalid option is given, will return to main, instead of crashing

@@ -1,0 +1,6 @@
+
+C:/udp/c/jrc.bat
+C:/udp/c/src2/jrc.py
+C:/udp/c/jrc.bat
+C:/udp/c/src/open_file.py
+C:/udp/r/src-py/daily_fortune.py

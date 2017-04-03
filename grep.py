@@ -2,7 +2,7 @@
 
 __version__ = "1.0.4.1"
 __author__ = "Ryan Pelton"
-__email__ = "ryantp@gmail.com"
+__email__ = "ryantp92@gmail.com"
 __maintainer__ = "NOT_ACTIVELY_MAINTAINED"
 __license__ = "GNU GPL"
 __status__ = "Production"
@@ -45,10 +45,10 @@ e.g.	grep example.txt "hello"
 
 ## output to file:
 
->>>		grep.py <file> <string> -f <output_file_path>
+>>>		grep <file> <string> -f <output_file_path>
 
 		
-e.g.	grep.py example.txt "hello" -f "example_res.txt"
+e.g.	grep example.txt "hello" -f "example_res.txt"
 
 
 ** other notes
@@ -83,7 +83,7 @@ par.add_argument('-e', '--example', action = 'store_true', help = 'display examp
 par.add_argument('-v', '--version', action = 'version', version = '%(prog)s {}'.format(__version__),
 	help = 'displays tool version')
 par.add_argument('-r', '--retast', action = 'store', help = 'Replace Target String')
-par.add_argument('-c', '--compare', action = 'store', help = 'display differences between two files')
+#par.add_argument('-c', '--compare', action = 'store', help = 'display differences between two files')
 par.add_argument('-a', '--author', action = 'store_true', help = 'display program author')
 par.add_argument('-V', '--Verbose', action = 'store_true', help = 'verbose output')
 
@@ -167,15 +167,14 @@ def retast(target_string, file_name, replacement_string):
 	os.system('ren %(tmp)s %(org)s' % {'tmp': tmp_file, 'org': file_name})
 
 
+"""
 def compare_files(compare_type):
 	'''prints lines that aren't identical to eachother'''
 	display_field = '''
 
 	File 1:
 		%s
-
-	%%%%%%%%
-
+	%%%%%%%%%%%%%%%%%%%%%%%%
 	File 2:
 		%s
 	============'''# % (line1, line2)
@@ -209,6 +208,7 @@ def compare_files(compare_type):
 			print('Unknown comparison type, program exiting')
 			exit()
 	print('\n------------------------\n')
+"""
 
 args = par.parse_args() 
 
@@ -220,7 +220,7 @@ if (args.fout):
 elif (args.retast):
 	retast(target_string = args.string, file_name = args.file, replacement_string = args.retast)
 else:
-	if not args.author and not args.info and not args.example and not args.compare:
+	if not args.author and not args.info and not args.example:
 
 		# if [-a/--author] or [-i/--info] is included, then grep_file() won't run 
 		if not args.string:
@@ -231,12 +231,12 @@ else:
 			else:
 				grep_file(args.string) 
 	elif (args.author):
-		print('grep -- arkat-one <arcius0@gmail.com>') 
+		print('%(a)s <%(e)s>' % {'a': __author__, 'e': __email__}) 
 	elif (args.info):
 		print(h_info) 
 	elif (args.example):
 		print(e_snip) 
-	elif (args.compare):
-		compare_files(args.compare)
+	#elif (args.compare):
+		#compare_files(args.compare)
 	else:
 		print('No options or file path were provied  type `grep -h` for help')
