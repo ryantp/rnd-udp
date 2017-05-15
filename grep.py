@@ -73,8 +73,7 @@ e.g.	grep example.txt "hello" -f "example_res.txt"
 # CLI PARSER -- set-up 
 par = argparse.ArgumentParser(prog = 'grep', prefix_chars = '-',
 	description = 'ASCII grep tool (CLI) only -- type [-h/--help] for assistance.') 
-par.add_argument('file', nargs = '?', type = argparse.FileType('r'),
-	default = None, help = 'file to grep') 
+par.add_argument('file', nargs = '?', action = 'store', help = 'file to grep') 
 par.add_argument('string', nargs = '?', action = 'store',
 	help = 'string to search for within file') 
 par.add_argument('-f', '--fout', action = 'store', help = 'output info to file FOUT') 
@@ -88,40 +87,42 @@ par.add_argument('-a', '--author', action = 'store_true', help = 'display progra
 par.add_argument('-V', '--Verbose', action = 'store_true', help = 'verbose output')
 
 
-def grep_fileV(search_string):
+def grep_fileV(file_name, search_string):
 	i = 0
 	print('\n********************\n')
-	for line in args.file:
-		try:
-			i += 1
-			if re.search(search_string, line):
-				try:
-					print("%d >>> %s" % (i, line))
-				except UnicodeEncodeError:
-					print(line.encode("utf-8"))
-			else:
-				pass
-		except KeyboardInterrupt:
-			sys.exit(3)
+	with open(file_name, 'r') as f:
+		for line in f.read().split("\n"):
+			try:
+				i += 1
+				if re.search(search_string, line):
+					try:
+						print("%d >>> %s" % (i, line))
+					except UnicodeEncodeError:
+						print(line.encode("utf-8"))
+				else:
+					pass
+			except KeyboardInterrupt:
+				sys.exit(3)
 	print('\n********************\n')
 
 
-def grep_file(search_string):
+def grep_file(file_name, search_string):
 	print('\n********************\n')
-	for line in args.file:
-		try:
-			if re.search(search_string, line):
-				try:
-					print(line)
-				except UnicodeEncodeError:
-					print(line.encode("utf-8"))
-			else:
-				pass
-		except KeyboardInterrupt:
-			sys.exit(3)
+	with open(file_name, 'r') as f:
+		for line in f.read().split('\n'):
+			try:
+				if re.search(search_string, line):
+					try:
+						print(line)
+					except UnicodeEncodeError:
+						print(line.encode("utf-8"))
+				else:
+					pass
+			except KeyboardInterrupt:
+				sys.exit(3)
 	print('\n********************\n')
 
-def grep_output_to_file(search_string):
+def grep_output_to_file(file_name, search_string):
 	output_file_name = args.fout 
 	
 	# original standard output 
@@ -132,11 +133,12 @@ def grep_output_to_file(search_string):
 
 	
 
-	for line in args.file:
-		if re.search(search_string, line):
-			print(line + '\n') 
-		else:
-			pass 
+	with open(file_name, 'r') as f:
+		for line in f.read().split('\n'):
+			if re.search(search_string, line):
+				print(line + '\n') 
+			else:
+				pass 
 	
 	sys.stdout.close() 
 	sys.stdout = temp 
@@ -214,7 +216,7 @@ args = par.parse_args()
 
 if (args.fout):
 	try:
-		grep_output_to_file(args.string) 
+		grep_output_to_file(args.file, args.string) 
 	except Exception as e:
 		print(e)
 elif (args.retast):
@@ -227,9 +229,9 @@ else:
 			print("No search string was provided")
 		else:
 			if args.Verbose:
-				grep_fileV(args.string)
+				grep_fileV(args.file, args.string)
 			else:
-				grep_file(args.string) 
+				grep_file(args.file, args.string) 
 	elif (args.author):
 		print('%(a)s <%(e)s>' % {'a': __author__, 'e': __email__}) 
 	elif (args.info):
