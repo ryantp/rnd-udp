@@ -9,6 +9,7 @@ import string
 import sys
 
 uc = string.ascii_letters + string.digits + "_*&"
+ofile = "C:/Users/%(usr)s/Documents/of/rpw/rpw.txt"
 
 rstr = []
 
@@ -20,6 +21,8 @@ except IndexError:
 except ValueError:
 	if sys.argv[1] == '-h' or sys.argv[1] == '--help':
 		print("Usage: rpw [STRING_LENGTH]")
+		print("[-f] -> ouput to ", end = '')
+		print(ofile % {'usr': getpass.getuser()})
 		sys.exit(0)
 	else:
 		print("err-no 1: rpw requires a length integer")
@@ -28,12 +31,11 @@ except ValueError:
 for i in range(rng):
 	rstr.append(random.choice(uc))
 
-with open("C:/Users/%(usr)s/Documents/of/rpw/rpw.txt" % {'usr': getpass.getuser()}, 'a') as f:
-	# gets current user through PATH, so this should work most times
-	f.write("%s\n" % "".join(rstr))
-
 try:
-	if sys.argv[2] == '-p':
-		print("".join(rstr))
+	if sys.argv[2] == '-f':
+		with open(ofile % {'usr': getpass.getuser()}, 'a') as f:
+			# gets current user through PATH, so this should work most times
+			f.write("%s\n" % "".join(rstr))
 except IndexError:
-	pass
+	print("".join(rstr))
+	
